@@ -1,8 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\s16crud\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -26,17 +25,16 @@ Route::get('/', function () {
     return to_route('login');
 });
 
+// S16 crud
+Route::group(['middleware' => ['auth']], function () {
+    Route::resources(['post' => PostController::class]);
+});
+
 Route::get('/dashboard', function (Request $request) {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/test', function () {
-        return Inertia::render('test/test');
-    });
-
-
-
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

@@ -94,30 +94,24 @@ const useStyles = createStyles((theme) => ({
 
 const mockdata = [
     { label: "Dashboard", icon: "1", link: "/dashboard" },
-    // {
-    //     label: "Fundamental: File Storage",
-    //     icon: 13,
-    //     initiallyOpened: true,
-    //     link: "/dashboard/13-file-storage",
-    // },
-    // {
-    //     label: "Fundamental: CRUD Operation",
-    //     icon: 14,
-    //     links: [
-    //         {
-    //             label: "Posts",
-    //             link: "/dashboard/14-crud-operation/posts",
-    //         },
-    //         {
-    //             label: "Create Post",
-    //             link: "/dashboard/14-crud-operation/create-post",
-    //         },
-    //         {
-    //             label: "Trahsed Posts",
-    //             link: "/dashboard/14-crud-operation/posts/trashed",
-    //         },
-    //     ],
-    // },
+    {
+        label: "Fundamental: CRUD Operation",
+        icon: 14,
+        links: [
+            {
+                label: "Posts",
+                link: "/post",
+            },
+            {
+                label: "Create Post",
+                link: "/post/create",
+            },
+            {
+                label: "Trahsed Posts",
+                link: "/posts/trashed",
+            },
+        ],
+    },
     // {
     //   label: "Releases",
     //   icon: IconCalendarStats,
