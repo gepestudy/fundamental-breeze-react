@@ -1,5 +1,5 @@
 import AppShell from "@/Components/layouts/AppShell";
-import { PageProps, User } from "@/types";
+import { Flash, PageProps, User } from "@/types";
 import { Link } from "@inertiajs/react";
 import {
     ActionIcon,
@@ -18,9 +18,15 @@ import {
 import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
 import { Posts } from "./types";
 
-const posts = ({ auth, posts }: { auth: User; posts: Posts[] }) => {
-    console.log(posts);
-
+const posts = ({
+    auth,
+    posts,
+    flash,
+}: {
+    auth: { user: User };
+    posts: Posts[];
+    flash?: Flash;
+}) => {
     const rows =
         posts.length > 0
             ? posts.map((post, index) => (
@@ -52,10 +58,7 @@ const posts = ({ auth, posts }: { auth: User; posts: Posts[] }) => {
                           <Group>
                               <Tooltip label="view">
                                   <ActionIcon
-                                      href={
-                                          "/dashboard/14-crud-operation/posts/" +
-                                          post.id
-                                      }
+                                      href={"/post/" + post.id}
                                       component={Link}
                                   >
                                       <IconEye />
@@ -63,11 +66,7 @@ const posts = ({ auth, posts }: { auth: User; posts: Posts[] }) => {
                               </Tooltip>
                               <Tooltip label="edit">
                                   <ActionIcon
-                                      href={
-                                          "/dashboard/14-crud-operation/posts/" +
-                                          post.id +
-                                          "/edit"
-                                      }
+                                      href={"/post/" + post.id + "/edit"}
                                       component={Link}
                                   >
                                       <IconEdit />
@@ -99,8 +98,9 @@ const posts = ({ auth, posts }: { auth: User; posts: Posts[] }) => {
             <th>Action</th>
         </tr>
     );
+
     return (
-        <AppShell pageTitle="Posts" user={auth}>
+        <AppShell pageTitle="Posts" user={auth.user} flash={flash}>
             <Container fluid>
                 {/* <Modal
         opened={modalDeleteOpened}

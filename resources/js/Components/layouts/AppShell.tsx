@@ -1,20 +1,29 @@
-import { AppShell as MantineAppShell, useMantineTheme } from "@mantine/core";
-import { ReactNode, useState } from "react";
+import {
+    AppShell as MantineAppShell,
+    Notification,
+    Text,
+    useMantineTheme,
+} from "@mantine/core";
+import { ReactNode, useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import Header from "./Header";
-import { User } from "@/types";
+import { Flash, User } from "@/types";
 import { Head } from "@inertiajs/react";
+import { notifications } from "@mantine/notifications";
 const AppShell = ({
     children,
     user,
     pageTitle,
+    flash,
 }: {
     children: ReactNode;
     user: User;
     pageTitle: string;
+    flash?: Flash;
 }) => {
     const theme = useMantineTheme();
     const [opened, setOpened] = useState(false);
+
     return (
         <MantineAppShell
             styles={{
@@ -40,6 +49,7 @@ const AppShell = ({
             }
         >
             <Head title={pageTitle} />
+            {flash?.message && <Text color="red">{flash.message}</Text>}
             {children}
         </MantineAppShell>
     );

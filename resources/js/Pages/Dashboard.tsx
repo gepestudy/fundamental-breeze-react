@@ -4,7 +4,7 @@ import { Head } from "@inertiajs/react";
 import { Button, useMantineColorScheme } from "@mantine/core";
 import axios from "axios";
 
-export default function Dashboard({ auth }: PageProps) {
+export default function Dashboard({ auth, flash }: PageProps) {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
     return (

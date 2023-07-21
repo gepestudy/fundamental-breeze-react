@@ -20,13 +20,17 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     if (Auth::check()) {
-        return redirect('/dashboard');
+        return Inertia::render('Dashboard');
     }
     return to_route('login');
 });
 
+Route::get('/test', function () {
+    return Inertia::render('test');
+})->middleware('web');
+
 // S16 crud
-Route::group(['middleware' => ['auth']], function () {
+Route::middleware('auth')->group(function () {
     Route::resources(['post' => PostController::class]);
 });
 
@@ -41,3 +45,9 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+// Route fallback untuk menangani route yang tidak ada
+Route::fallback(function () {
+    // Gunakan Inertia::render() untuk menampilkan halaman 404 dalam mode Inertia.js
+    return Inertia::render('Error404');
+})->name('fallback');

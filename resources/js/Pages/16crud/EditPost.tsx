@@ -1,5 +1,5 @@
 import AppShell from "@/Components/layouts/AppShell";
-import { Flash, User } from "@/types";
+import { User } from "@/types";
 import { useForm } from "@inertiajs/react";
 import {
     Button,
@@ -15,18 +15,24 @@ import {
     rem,
 } from "@mantine/core";
 import { IconUpload } from "@tabler/icons-react";
-import { Category } from "./types";
+import { Category, Posts } from "./types";
 
-const CreatePost = ({
+const EditPost = ({
     auth,
     categories,
-    flash,
+    post,
 }: {
     auth: { user: User };
     categories: string[];
-    flash: Flash;
+    post: Posts;
 }) => {
-    const { data, setData, post, progress, errors } = useForm({
+    const {
+        data,
+        setData,
+        post: postMethod,
+        progress,
+        errors,
+    } = useForm({
         title: "",
         image: null,
         description: "",
@@ -34,7 +40,7 @@ const CreatePost = ({
     });
 
     return (
-        <AppShell pageTitle="Create Post" user={auth.user} flash={flash}>
+        <AppShell pageTitle="Create Post" user={auth.user}>
             <Container fluid>
                 <Card shadow="sm" padding="lg" radius="md" withBorder>
                     <Card.Section>
@@ -59,7 +65,7 @@ const CreatePost = ({
                         <form
                             onSubmit={(e) => {
                                 e.preventDefault();
-                                post(route("post.store"));
+                                postMethod(route("post.store"));
                             }}
                         >
                             <FileInput
@@ -121,4 +127,4 @@ const CreatePost = ({
         </AppShell>
     );
 };
-export default CreatePost;
+export default EditPost;

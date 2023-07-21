@@ -5,7 +5,9 @@ namespace App\Http\Controllers\s16crud;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -17,6 +19,8 @@ class PostController extends Controller
      */
     public function index()
     {
+
+
         $posts = Post::with('category')->get();
         return Inertia::render('16crud/Posts', [
             'posts' => $posts,
@@ -39,12 +43,12 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'title' => ['required', 'max:200', 'min:1'],
-        //     'description' => ['required', 'min:10'],
-        //     'image' => ['required', 'image', 'mimes:png,jpg,jpeg', 'max:5120'],
-        //     'category' => ['required', 'string']
-        // ]);
+        $request->validate([
+            'title' => ['required', 'max:200', 'min:1'],
+            'description' => ['required', 'min:10'],
+            'image' => ['required', 'image', 'mimes:png,jpg,jpeg', 'max:5120'],
+            'category' => ['required', 'string']
+        ]);
 
         // bikin category jika baru, jika lama temukan
         $category =  Category::firstOrCreate(['name' => $request->category]);
@@ -73,7 +77,18 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        dd($id);
+        try {
+            $post = Post::with('category')->findOrFail($id);
+            return Inertia::render('16crud/ShowPost', [
+                'post' => $post,
+            ]);
+        } catch (ModelNotFoundException $error) {
+            return Inertia::render('16crud/ShowPost', [
+                'post' => null,
+                'error' => $error,
+                'message' => 'Post tidak ditemukan',
+            ]);
+        }
     }
 
     /**
@@ -81,7 +96,16 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try {
+            $post = Post::findOrFail($id);
+        } catch (ModelNotFoundException $th) {
+            return redirect()->route('post.index')->with('error', 'Post tidak ditemukan');
+        }
+        $categories = Category::all()->pluck('name');
+        return Inertia::render('16crud/EditPost', [
+            'post' => $post,
+            'categories' => $categories,
+        ]);
     }
 
     /**

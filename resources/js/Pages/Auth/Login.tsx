@@ -1,3 +1,4 @@
+import { Flash } from "@/types";
 import { Head, Link, useForm } from "@inertiajs/react";
 import {
     Box,
@@ -7,6 +8,7 @@ import {
     Container,
     PasswordInput,
     Stack,
+    Text,
     TextInput,
 } from "@mantine/core";
 import axios from "axios";
