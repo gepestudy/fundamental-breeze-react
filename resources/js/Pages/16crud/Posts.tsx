@@ -38,6 +38,7 @@ const posts = ({
                               alt="image"
                               width={100}
                               height={100}
+                              withPlaceholder
                           />
                       </td>
                       <td>

@@ -37,7 +37,7 @@ const ShowPost = ({ auth, post }: { auth: User; post: Posts }) => {
                             </Button>
                         </Group>
                     </Card.Section>
-                    <Container fluid>
+                    <Container fluid mt={"md"}>
                         <Box
                             sx={(theme) => ({
                                 display: "flex",
@@ -51,6 +51,7 @@ const ShowPost = ({ auth, post }: { auth: User; post: Posts }) => {
                                 width={400}
                                 height={400}
                                 fit="contain"
+                                withPlaceholder
                             />
                         </Box>
                         <Text>{post.description}</Text>
