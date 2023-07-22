@@ -1,15 +1,9 @@
-import {
-    AppShell as MantineAppShell,
-    Notification,
-    Text,
-    useMantineTheme,
-} from "@mantine/core";
-import { ReactNode, useEffect, useState } from "react";
-import Navbar from "./Navbar";
-import Header from "./Header";
 import { Flash, User } from "@/types";
 import { Head } from "@inertiajs/react";
-import { notifications } from "@mantine/notifications";
+import { AppShell as MantineAppShell, useMantineTheme } from "@mantine/core";
+import { ReactNode, useState } from "react";
+import Header from "./Header";
+import Navbar from "./Navbar";
 const AppShell = ({
     children,
     user,
@@ -49,7 +43,6 @@ const AppShell = ({
             }
         >
             <Head title={pageTitle} />
-            {flash?.message && <Text color="red">{flash.message}</Text>}
             {children}
         </MantineAppShell>
     );

@@ -1,5 +1,5 @@
 import AppShell from "@/Components/layouts/AppShell";
-import { Flash, PageProps, User } from "@/types";
+import { Flash, User } from "@/types";
 import { Link } from "@inertiajs/react";
 import {
     ActionIcon,

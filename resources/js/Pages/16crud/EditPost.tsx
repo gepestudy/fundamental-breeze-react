@@ -1,13 +1,15 @@
 import AppShell from "@/Components/layouts/AppShell";
 import { User } from "@/types";
-import { useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import {
     Button,
     Card,
+    Center,
     Container,
     Divider,
     FileInput,
     Group,
+    Image,
     MultiSelect,
     Text,
     TextInput,
@@ -16,7 +18,8 @@ import {
 } from "@mantine/core";
 import { IconUpload } from "@tabler/icons-react";
 import { Category, Posts } from "./types";
-
+import { FileWithPath } from "@mantine/dropzone";
+import { useState } from "react";
 const EditPost = ({
     auth,
     categories,
@@ -26,21 +29,27 @@ const EditPost = ({
     categories: string[];
     post: Posts;
 }) => {
+    const [title, setTitle] = useState(post.title);
+    const [description, setDescription] = useState(post.description);
     const {
         data,
         setData,
-        post: postMethod,
+        post: PostMethod,
+        put,
         progress,
         errors,
     } = useForm({
-        title: "",
+        title: title,
         image: null,
-        description: "",
-        category: "",
+        description: description,
+        category: post.category?.name,
+        _method: "put",
     });
 
+    const imagePreview = data.image ? URL.createObjectURL(data.image) : null;
+
     return (
-        <AppShell pageTitle="Create Post" user={auth.user}>
+        <AppShell pageTitle="Edit Post" user={auth.user}>
             <Container fluid>
                 <Card shadow="sm" padding="lg" radius="md" withBorder>
                     <Card.Section>
@@ -56,7 +65,8 @@ const EditPost = ({
                             })}
                         >
                             <Text size={"xl"} weight={"bold"}>
-                                Create Post
+                                Edit Post{" "}
+                                <span className="italic">{post.title}</span>
                             </Text>
                         </Group>
                         <Divider />
@@ -65,9 +75,24 @@ const EditPost = ({
                         <form
                             onSubmit={(e) => {
                                 e.preventDefault();
-                                postMethod(route("post.store"));
+                                PostMethod(route("post.update", post.id));
                             }}
+                            encType="multipart/form-data"
                         >
+                            <Center>
+                                <Image
+                                    src={
+                                        imagePreview !== null
+                                            ? imagePreview
+                                            : post.image
+                                    }
+                                    alt="image"
+                                    width={300}
+                                    height={300}
+                                    fit="contain"
+                                    withPlaceholder
+                                />
+                            </Center>
                             <FileInput
                                 label="Post image"
                                 placeholder="Your post image"
@@ -81,6 +106,9 @@ const EditPost = ({
                                 label="Title"
                                 placeholder="Title"
                                 mb="md"
+                                defaultValue={
+                                    data.title ? data.title : post.title
+                                }
                                 onChange={(e) =>
                                     setData("title", e.target.value)
                                 }
@@ -93,6 +121,7 @@ const EditPost = ({
                                 placeholder="Pick category (optional)"
                                 // @ts-ignore
                                 value={data.category}
+                                defaultValue={[post.category?.name!]}
                                 onChange={(e) => setData("category", e[0])}
                                 creatable
                                 getCreateLabel={(query) => `+ create ${query}`}
@@ -107,6 +136,11 @@ const EditPost = ({
                                 placeholder="Description"
                                 autosize
                                 mb="md"
+                                value={
+                                    data.description
+                                        ? data.description
+                                        : post.description
+                                }
                                 onChange={(e) =>
                                     setData("description", e.target.value)
                                 }
