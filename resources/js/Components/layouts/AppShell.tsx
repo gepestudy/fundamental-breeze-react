@@ -4,6 +4,7 @@ import { AppShell as MantineAppShell, useMantineTheme } from "@mantine/core";
 import { ReactNode, useState } from "react";
 import Header from "./Header";
 import Navbar from "./Navbar";
+import FlashMessage from "../flashMessage/FlashMessage";
 const AppShell = ({
     children,
     user,
@@ -43,6 +44,7 @@ const AppShell = ({
             }
         >
             <Head title={pageTitle} />
+            {flash && <FlashMessage flash={flash} />}
             {children}
         </MantineAppShell>
     );

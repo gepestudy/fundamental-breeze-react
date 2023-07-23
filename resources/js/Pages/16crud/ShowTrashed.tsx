@@ -12,7 +12,7 @@ import {
 } from "@mantine/core";
 import { Link } from "@inertiajs/react";
 
-const ShowPost = ({
+const ShowTrahsed = ({
     auth,
     post,
     flash,
@@ -39,15 +39,15 @@ const ShowPost = ({
                                 sx={(theme) => ({
                                     backgroundColor:
                                         theme.colorScheme === "dark"
-                                            ? theme.colors.dark[8]
-                                            : theme.colors.gray[0],
+                                            ? theme.colors.yellow[6]
+                                            : theme.colors.yellow[6],
                                 })}
                             >
-                                <Text size={"xl"} weight={"bold"}>
+                                <Text size={"xl"} weight={"bold"} color="dark">
                                     {post.title}
                                 </Text>
-                                <Button component={Link} href={"/post"}>
-                                    back to posts
+                                <Button component={Link} href={"/post/trashed"}>
+                                    back to trashed posts
                                 </Button>
                             </Group>
                         </Card.Section>
@@ -76,4 +76,4 @@ const ShowPost = ({
         </AppShell>
     );
 };
-export default ShowPost;
+export default ShowTrahsed;

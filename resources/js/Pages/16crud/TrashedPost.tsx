@@ -16,11 +16,11 @@ import {
     Text,
     Tooltip,
 } from "@mantine/core";
-import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
+import { IconEdit, IconEye, IconRefresh, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 import { Posts } from "./types";
 
-const posts = ({
+const TrashedPost = ({
     auth,
     posts,
     flash,
@@ -64,18 +64,22 @@ const posts = ({
                           <Group>
                               <Tooltip label="view">
                                   <ActionIcon
-                                      href={"/post/" + post.id}
+                                      href={"/post/trashed/" + post.id}
                                       component={Link}
                                   >
                                       <IconEye />
                                   </ActionIcon>
                               </Tooltip>
-                              <Tooltip label="edit">
+                              <Tooltip label="Restore">
                                   <ActionIcon
-                                      href={"/post/" + post.id + "/edit"}
+                                      href={
+                                          "/post/trashed/" +
+                                          post.id +
+                                          "/restore"
+                                      }
                                       component={Link}
                                   >
-                                      <IconEdit />
+                                      <IconRefresh />
                                   </ActionIcon>
                               </Tooltip>
                               <Tooltip label="delete">
@@ -105,10 +109,8 @@ const posts = ({
         </tr>
     );
 
-    console.log(selectedPost, modalDeleteOpened);
-
     const handleDelete = async (id: number) => {
-        router.delete(route("post.destroy", id), {
+        router.delete(route("post.forceDelete", id), {
             onSuccess: () => {
                 setModalDeleteOpened(false);
                 setSelectedPost(null);
@@ -133,7 +135,10 @@ const posts = ({
                     centered
                     withCloseButton={false}
                 >
-                    <Text>Are you sure you want to delete this post?</Text>
+                    <Text align="center">
+                        This action will permanently delete this post
+                        <br /> are you sure?
+                    </Text>
                     <Group
                         sx={(theme) => ({
                             display: "flex",
@@ -172,28 +177,21 @@ const posts = ({
                             sx={(theme) => ({
                                 backgroundColor:
                                     theme.colorScheme === "dark"
-                                        ? theme.colors.dark[8]
-                                        : theme.colors.gray[0],
+                                        ? theme.colors.yellow[6]
+                                        : theme.colors.yellow[6],
                             })}
                         >
-                            <Text size={"xl"} weight={"bold"}>
+                            <Text size={"xl"} weight={"bold"} color="dark">
                                 All Post
                             </Text>
                             <Box>
                                 <Button
-                                    href={"/post/create"}
+                                    href={"/post"}
                                     component={Link}
                                     mr={"md"}
                                     color={"indigo"}
                                 >
-                                    Create
-                                </Button>
-                                <Button
-                                    color="orange"
-                                    href={route("post.trashed")}
-                                    component={Link}
-                                >
-                                    Trashed
+                                    back to post
                                 </Button>
                             </Box>
                         </Group>
@@ -255,4 +253,4 @@ const posts = ({
         </AppShell>
     );
 };
-export default posts;
+export default TrashedPost;

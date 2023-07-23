@@ -91,6 +91,7 @@ class PostController extends Controller
         }
     }
 
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -153,6 +154,67 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // dd($id);
+        try {
+            $post = Post::findOrFail($id);
+            $post->delete();
+            return back()->with('success', 'Post berhasil dihapus');
+        } catch (ModelNotFoundException $th) {
+            return back()->with('error', 'Post gagal dihapus');
+        }
+    }
+
+    public function restorePost(string $id)
+    {
+
+        try {
+            Post::onlyTrashed()->findOrFail($id)->restore();
+            return back()->with('success', "Post {$id} berhasil di restore");
+        } catch (ModelNotFoundException $th) {
+            return back()->with('error', "Post {$id} gagal di restore");
+        }
+    }
+
+    public function trashedPost()
+    {
+
+        $posts = Post::with('category')->onlyTrashed()->get();
+        return Inertia::render('16crud/TrashedPost', [
+            'posts' => $posts,
+        ]);
+    }
+
+
+    public function showTrashed(string $id)
+    {
+        try {
+            $post = Post::with('category')->onlyTrashed()->findOrFail($id);
+            return Inertia::render('16crud/ShowTrashed', [
+                'post' => $post,
+            ]);
+        } catch (ModelNotFoundException $error) {
+            return Inertia::render('16crud/ShowTrashed', [
+                'post' => null,
+                'error' => $error,
+                'message' => 'Post tidak ditemukan',
+            ]);
+        }
+    }
+    public function forceDelete(string $id)
+    {
+        try {
+            $post = Post::onlyTrashed()->findOrFail($id);
+
+            // hapus image yang ada di storage biar ga sampah
+            $fileUrl = $post->image;
+            $filenameOld = basename($fileUrl);
+            Storage::delete('/images/postImage/' . $filenameOld);
+
+            // delete permanent datanya
+            $post->forceDelete();
+            return back()->with('success', "Post {$id} berhasil di delete permanent");
+        } catch (ModelNotFoundException $error) {
+            return back()->with('error', "Post {$id} gagal di restore");
+        }
     }
 }

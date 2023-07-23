@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\s16crud\PostController;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,6 +32,10 @@ Route::get('/test', function () {
 
 // S16 crud
 Route::middleware('auth')->group(function () {
+    Route::get('/post/trashed/{id}/restore', [PostController::class, 'restorePost'])->name('post.trashed');
+    Route::delete('/post/trashed/{id}/forceDelete', [PostController::class, 'forceDelete'])->name('post.forceDelete');
+    Route::get('/post/trashed/{id}', [PostController::class, 'showTrashed'])->name('show.trashed');
+    Route::get('/post/trashed', [PostController::class, 'trashedPost'])->name('post.trashed');
     Route::resources(['post' => PostController::class]);
 });
 
@@ -43,6 +48,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/clear-flash-session', function () {
+    session()->forget('message');
+    session()->forget('error');
+    session()->forget('success');
+    session()->forget('flash');
+    return Response(['message' => "memek"], 200);
+})->name('clear-flash-session');
 
 require __DIR__ . '/auth.php';
 

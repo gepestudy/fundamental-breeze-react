@@ -5,6 +5,7 @@ import {
 } from "@mantine/core";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { Notifications } from "@mantine/notifications";
+import FlashMessage from "../flashMessage/FlashMessage";
 const ColorProvider = ({ children }: { children: React.ReactNode }) => {
     const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
         key: "mantine-color-scheme",

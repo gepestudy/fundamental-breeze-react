@@ -108,7 +108,7 @@ const mockdata = [
             },
             {
                 label: "Trahsed Posts",
-                link: "/posts/trashed",
+                link: "/post/trashed",
             },
         ],
     },
