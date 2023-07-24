@@ -18,11 +18,11 @@ class PostController extends Controller
      */
     public function index()
     {
-
-
+        $canCreatePost = auth()->user()->can('create', Post::class);
         $posts = Post::with('category')->paginate(10);
         return Inertia::render('16crud/Posts', [
             'posts' => $posts,
+            'canCreatePost' => $canCreatePost,
         ]);
     }
 
@@ -31,6 +31,7 @@ class PostController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Post::class);
         $categories = Category::all()->pluck('name');
         return Inertia::render('16crud/CreatePost', [
             'categories' => $categories,
@@ -42,6 +43,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Post::class);
         $request->validate([
             'title' => ['required', 'max:200', 'min:1'],
             'description' => ['required', 'min:10'],
@@ -96,8 +98,11 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
+
         try {
             $post = Post::with('category')->findOrFail($id);
+            $this->authorize('update', $post); //karna update policy butuh post maka di taro di bawah sini aja
+
         } catch (ModelNotFoundException $th) {
             return Inertia::render('Error404');
         }
@@ -113,6 +118,7 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
         $request->validate([
             'title' => ['required', 'max:200', 'min:1'],
             'description' => ['required', 'min:10'],
@@ -120,9 +126,11 @@ class PostController extends Controller
             'category' => ['required', 'string']
         ]);
 
+
+        $post = Post::with('category')->findOrFail($id);
+        $this->authorize('update', $post); //karna update policy butuh post maka di taro di bawah sini aja
         // bikin category jika baru, jika lama temukan
         $category =  Category::firstOrCreate(['name' => $request->category]);
-        $post = Post::with('category')->findOrFail($id);
         $post->title = $request->get('title');
         $post->description = $request->get('description');
         $post->category_id = $category->id;
@@ -153,9 +161,10 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        // dd($id);
+
         try {
             $post = Post::findOrFail($id);
+            $this->authorize('delete', $post);
             $post->delete();
             return back()->with('success', 'Post berhasil dihapus');
         } catch (ModelNotFoundException $th) {
@@ -165,9 +174,10 @@ class PostController extends Controller
 
     public function restorePost(string $id)
     {
-
         try {
-            Post::onlyTrashed()->findOrFail($id)->restore();
+            $post = Post::onlyTrashed()->findOrFail($id);
+            $this->authorize('restore', $post);
+            $post->restore();
             return back()->with('success', "Post {$id} berhasil di restore");
         } catch (ModelNotFoundException $th) {
             return back()->with('error', "Post {$id} gagal di restore");
@@ -176,6 +186,7 @@ class PostController extends Controller
 
     public function trashedPost()
     {
+        $this->authorize('viewTrashed', Post::class);
 
         $posts = Post::with('category')->onlyTrashed()->paginate(10);
         return Inertia::render('16crud/TrashedPost', [
@@ -186,8 +197,10 @@ class PostController extends Controller
 
     public function showTrashed(string $id)
     {
+
         try {
             $post = Post::with('category')->onlyTrashed()->findOrFail($id);
+            $this->authorize('viewTrashedDetail', $post);
             return Inertia::render('16crud/ShowTrashed', [
                 'post' => $post,
             ]);
@@ -201,9 +214,10 @@ class PostController extends Controller
     }
     public function forceDelete(string $id)
     {
+
         try {
             $post = Post::onlyTrashed()->findOrFail($id);
-
+            $this->authorize('forceDelete', $post);
             // hapus image yang ada di storage biar ga sampah
             $fileUrl = $post->image;
             $filenameOld = basename($fileUrl);

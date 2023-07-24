@@ -26,15 +26,18 @@ const posts = ({
     posts,
     flash,
     ziggy,
+    canCreatePost,
 }: {
     auth: { user: User };
     posts: PostsWithPaginate;
     flash?: Flash;
     ziggy: Ziggy;
+    canCreatePost: boolean;
 }) => {
     const [modalDeleteOpened, setModalDeleteOpened] = useState<boolean>(false);
     const [selectedPost, setSelectedPost] = useState<number | null>(null);
     const page: number = ziggy.query?.page ? parseInt(ziggy.query.page) : 1;
+    console.log(canCreatePost);
 
     const rows =
         posts && posts.data.length > 0
@@ -47,6 +50,7 @@ const posts = ({
                               alt="image"
                               width={100}
                               height={100}
+                              fit="contain"
                               withPlaceholder
                           />
                       </td>
@@ -74,24 +78,30 @@ const posts = ({
                                       <IconEye />
                                   </ActionIcon>
                               </Tooltip>
-                              <Tooltip label="edit">
-                                  <ActionIcon
-                                      href={"/post/" + post.id + "/edit"}
-                                      component={Link}
-                                  >
-                                      <IconEdit />
-                                  </ActionIcon>
-                              </Tooltip>
-                              <Tooltip label="delete">
-                                  <ActionIcon
-                                      onClick={() => {
-                                          setModalDeleteOpened(true);
-                                          setSelectedPost(post.id);
-                                      }}
-                                  >
-                                      <IconTrash />
-                                  </ActionIcon>
-                              </Tooltip>
+                              {canCreatePost && (
+                                  <>
+                                      <Tooltip label="edit">
+                                          <ActionIcon
+                                              href={
+                                                  "/post/" + post.id + "/edit"
+                                              }
+                                              component={Link}
+                                          >
+                                              <IconEdit />
+                                          </ActionIcon>
+                                      </Tooltip>
+                                      <Tooltip label="delete">
+                                          <ActionIcon
+                                              onClick={() => {
+                                                  setModalDeleteOpened(true);
+                                                  setSelectedPost(post.id);
+                                              }}
+                                          >
+                                              <IconTrash />
+                                          </ActionIcon>
+                                      </Tooltip>
+                                  </>
+                              )}
                           </Group>
                       </td>
                   </tr>
@@ -181,23 +191,25 @@ const posts = ({
                             <Text size={"xl"} weight={"bold"}>
                                 All Post
                             </Text>
-                            <Box>
-                                <Button
-                                    href={"/post/create"}
-                                    component={Link}
-                                    mr={"md"}
-                                    color={"indigo"}
-                                >
-                                    Create
-                                </Button>
-                                <Button
-                                    color="orange"
-                                    href={route("post.trashed")}
-                                    component={Link}
-                                >
-                                    Trashed
-                                </Button>
-                            </Box>
+                            {canCreatePost && (
+                                <Box>
+                                    <Button
+                                        href={"/post/create"}
+                                        component={Link}
+                                        mr={"md"}
+                                        color={"indigo"}
+                                    >
+                                        Create
+                                    </Button>
+                                    <Button
+                                        color="orange"
+                                        href={route("post.trashed")}
+                                        component={Link}
+                                    >
+                                        Trashed
+                                    </Button>
+                                </Box>
+                            )}
                         </Group>
                         <Divider />
                     </Card.Section>
