@@ -7,7 +7,6 @@ use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -21,7 +20,7 @@ class PostController extends Controller
     {
 
 
-        $posts = Post::with('category')->paginate(1);
+        $posts = Post::with('category')->paginate(10);
         return Inertia::render('16crud/Posts', [
             'posts' => $posts,
         ]);
@@ -178,7 +177,7 @@ class PostController extends Controller
     public function trashedPost()
     {
 
-        $posts = Post::with('category')->onlyTrashed()->paginate(1);
+        $posts = Post::with('category')->onlyTrashed()->paginate(10);
         return Inertia::render('16crud/TrashedPost', [
             'posts' => $posts,
         ]);
