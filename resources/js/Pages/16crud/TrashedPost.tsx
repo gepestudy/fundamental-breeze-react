@@ -1,5 +1,5 @@
 import AppShell from "@/Components/layouts/AppShell";
-import { Flash, User } from "@/types";
+import { Flash, User, Ziggy } from "@/types";
 import { Link, router } from "@inertiajs/react";
 import {
     ActionIcon,
@@ -11,30 +11,33 @@ import {
     Group,
     Image,
     Modal,
+    Pagination,
     ScrollArea,
     Table,
     Text,
     Tooltip,
 } from "@mantine/core";
-import { IconEdit, IconEye, IconRefresh, IconTrash } from "@tabler/icons-react";
+import { IconEye, IconRefresh, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
-import { Posts } from "./types";
+import { Posts, PostsWithPaginate } from "./types";
 
 const TrashedPost = ({
     auth,
     posts,
     flash,
+    ziggy,
 }: {
     auth: { user: User };
-    posts: Posts[];
+    posts: PostsWithPaginate;
     flash?: Flash;
+    ziggy: Ziggy;
 }) => {
     const [modalDeleteOpened, setModalDeleteOpened] = useState<boolean>(false);
     const [selectedPost, setSelectedPost] = useState<number | null>(null);
-    // const form = useForm();
+    const page: number = ziggy.query?.page ? parseInt(ziggy.query.page) : 1;
     const rows =
-        posts && posts.length > 0
-            ? posts.map((post, index) => (
+        posts && posts.data.length > 0
+            ? posts.data.map((post, index) => (
                   <tr key={post.id}>
                       <td>{post.id}</td>
                       <td>
@@ -219,34 +222,34 @@ const TrashedPost = ({
                                 Post not available
                             </Text>
                         )}
-                        {/* <Pagination.Root
-            total={data.last_page}
-            getItemProps={(page) => ({
-              component: Link,
-              href: `/dashboard/14-crud-operation/posts?page=${page}`,
-            })}
-            value={page}
-          >
-            <Group spacing={7} position="center" my="xl">
-              <Pagination.Previous
-                component={Link}
-                href={
-                  page === 1
-                    ? "#"
-                    : `/dashboard/14-crud-operation/posts?page=${page - 1}`
-                }
-              />
-              <Pagination.Items />
-              <Pagination.Next
-                component={Link}
-                href={
-                  page >= data.last_page
-                    ? "#"
-                    : `/dashboard/14-crud-operation/posts?page=${page + 1}`
-                }
-              />
-            </Group>
-          </Pagination.Root> */}
+                        <Pagination.Root
+                            total={posts.last_page}
+                            getItemProps={(page) => ({
+                                component: Link,
+                                href: `/post/trashed?page=${page}`,
+                            })}
+                            value={page}
+                        >
+                            <Group spacing={7} position="center" my="xl">
+                                <Pagination.Previous
+                                    component={Link}
+                                    href={
+                                        page === 1
+                                            ? "#"
+                                            : `/post/trashed?page=${page - 1}`
+                                    }
+                                />
+                                <Pagination.Items />
+                                <Pagination.Next
+                                    component={Link}
+                                    href={
+                                        page >= posts.last_page
+                                            ? "#"
+                                            : `/post/trashed?page=${page + 1}`
+                                    }
+                                />
+                            </Group>
+                        </Pagination.Root>
                     </Card.Section>
                 </Card>
             </Container>

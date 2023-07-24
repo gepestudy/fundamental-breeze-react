@@ -21,7 +21,7 @@ class PostController extends Controller
     {
 
 
-        $posts = Post::with('category')->get();
+        $posts = Post::with('category')->paginate(1);
         return Inertia::render('16crud/Posts', [
             'posts' => $posts,
         ]);
@@ -178,7 +178,7 @@ class PostController extends Controller
     public function trashedPost()
     {
 
-        $posts = Post::with('category')->onlyTrashed()->get();
+        $posts = Post::with('category')->onlyTrashed()->paginate(1);
         return Inertia::render('16crud/TrashedPost', [
             'posts' => $posts,
         ]);

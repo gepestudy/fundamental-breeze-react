@@ -11,6 +11,16 @@ export interface Flash {
     success: string;
 }
 
+export interface Ziggy {
+    default?: any[];
+    location: string;
+    port?: number | null;
+    query?: {
+        [key: string]: string;
+    };
+    url: string;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>
 > = T & {
@@ -18,4 +28,5 @@ export type PageProps<
         user: User;
     };
     flash: Flash;
+    ziggy: Ziggy;
 };
