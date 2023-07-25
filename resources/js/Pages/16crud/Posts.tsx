@@ -37,7 +37,6 @@ const posts = ({
     const [modalDeleteOpened, setModalDeleteOpened] = useState<boolean>(false);
     const [selectedPost, setSelectedPost] = useState<number | null>(null);
     const page: number = ziggy.query?.page ? parseInt(ziggy.query.page) : 1;
-    console.log(canCreatePost);
 
     const rows =
         posts && posts.data.length > 0
