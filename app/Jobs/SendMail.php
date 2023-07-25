@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\PostPublished;
+use App\Models\Post;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -26,8 +27,8 @@ class SendMail implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle(Post $post): void
     {
-        Mail::send(new PostPublished());
+        Mail::send(new PostPublished($post));
     }
 }

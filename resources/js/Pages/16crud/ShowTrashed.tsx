@@ -17,12 +17,12 @@ const ShowTrahsed = ({
     post,
     flash,
 }: {
-    auth: User;
+    auth: { user: User };
     post: Posts;
     flash: Flash;
 }) => {
     return (
-        <AppShell pageTitle="Show Post" user={auth} flash={flash}>
+        <AppShell pageTitle="Show Post" user={auth.user} flash={flash}>
             <Container fluid>
                 {!post && (
                     <Text size={"xl"} align="center" weight={"bold"} my={"xl"}>
