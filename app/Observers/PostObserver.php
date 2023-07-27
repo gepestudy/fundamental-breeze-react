@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Jobs\SendMail;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 class PostObserver
 {
@@ -12,7 +13,12 @@ class PostObserver
      */
     public function created(Post $post): void
     {
-        SendMail::dispatch($post);
+        try {
+            SendMail::dispatch(Auth::user(), $post, 'post.created');
+        } catch (\Throwable $e) {
+            // Catat pesan kesalahan ke log atau print pesan kesalahan.
+            dd($e);
+        }
     }
 
     /**

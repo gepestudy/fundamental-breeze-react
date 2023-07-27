@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -18,7 +19,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $canCreatePost = auth()->user()->can('create', Post::class);
+        $canCreatePost = Auth::user()->can('create', Post::class);
         $posts = Post::with('category')->paginate(10);
         return Inertia::render('16crud/Posts', [
             'posts' => $posts,

@@ -34,9 +34,9 @@ Route::get('/send-mail', function () {
     // step
     // 1. bikin mail
     // 2. bikin Queue
-    // 3. paggil job nya / queue nya, disini dengan SendMail::dispatch() karna jobnya send mail
+    // 3. paggil job nya / queue nya, disini dengan SendMail::dispatch() karna jobnya send mail, dispatch buat jalanin
     // 4. jangan lupa jalankan job nya dengan php artisan queue:work, kalau tidak itu hanya akan di simpan di DB dan tidak di eksekusi
-    SendMail::dispatch();
+    // Mail::send(new PostPublished(Auth::user()));
     dd('Mail has been sent');
 });
 

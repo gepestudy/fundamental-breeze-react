@@ -37,6 +37,7 @@ const posts = ({
     const [modalDeleteOpened, setModalDeleteOpened] = useState<boolean>(false);
     const [selectedPost, setSelectedPost] = useState<number | null>(null);
     const page: number = ziggy.query?.page ? parseInt(ziggy.query.page) : 1;
+    console.log(flash);
 
     const rows =
         posts && posts.data.length > 0
@@ -121,10 +122,12 @@ const posts = ({
     const handleDelete = async (id: number) => {
         router.delete(route("post.destroy", id), {
             onSuccess: () => {
+                router.reload();
                 setModalDeleteOpened(false);
                 setSelectedPost(null);
             },
             onError: () => {
+                router.reload();
                 setModalDeleteOpened(false);
                 setSelectedPost(null);
             },

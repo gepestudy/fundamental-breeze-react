@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -17,13 +18,11 @@ class PostPublished extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $post;
     /**
      * Create a new message instance.
      */
-    public function __construct(Post $post)
+    public function __construct(public User $user, public Post $post, public string $subjectAction = 'static subject')
     {
-        $this->post = $post;
     }
 
     /**
@@ -31,11 +30,9 @@ class PostPublished extends Mailable
      */
     public function envelope(): Envelope
     {
-        $user = Auth::user();
-        $email = $user ? $user->email : '';
         return new Envelope(
-            to: $email,
-            subject: 'Post Published anjing' . $email,
+            to: $this->user->email,
+            subject: 'Post Published anjing' . $this->subjectAction,
         );
     }
 
@@ -45,7 +42,10 @@ class PostPublished extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'welcome',
+            view: 'mails.Post',
+            with: [
+                'post' => $this->post,
+            ]
         );
     }
 

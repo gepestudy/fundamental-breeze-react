@@ -10,18 +10,18 @@ const FlashMessage = ({ flash }: { flash: Flash | undefined }) => {
     const messageId = useId();
     const successId = useId();
 
-    const clearFlash = async () => {
-        try {
-            const data = await axios.get("/clear-flash-session", {
-                headers: {
-                    Accept: "Aplication/json",
-                },
-            });
-            console.log("clear", data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    // const clearFlash = async () => {
+    //     try {
+    //         const data = await axios.get("/clear-flash-session", {
+    //             headers: {
+    //                 Accept: "Aplication/json",
+    //             },
+    //         });
+    //         console.log("clear", data);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
     useEffect(() => {
         switch (true) {
             case flash?.error !== null:
@@ -42,7 +42,7 @@ const FlashMessage = ({ flash }: { flash: Flash | undefined }) => {
                             fontWeight: 500,
                         },
                     }),
-                    onClose: () => clearFlash(),
+                    // onClose: () => clearFlash(),
                 });
                 break;
 
@@ -62,7 +62,7 @@ const FlashMessage = ({ flash }: { flash: Flash | undefined }) => {
                             fontWeight: 500,
                         },
                     }),
-                    onClose: () => clearFlash(),
+                    // onClose: () => clearFlash(),
                 });
                 break;
             case flash?.success !== null:
@@ -83,7 +83,7 @@ const FlashMessage = ({ flash }: { flash: Flash | undefined }) => {
                             fontWeight: 500,
                         },
                     }),
-                    onClose: () => clearFlash(),
+                    // onClose: () => clearFlash(),
                 });
                 break;
 
@@ -93,7 +93,7 @@ const FlashMessage = ({ flash }: { flash: Flash | undefined }) => {
         }
 
         return () => {
-            clearFlash();
+            // clearFlash();
         };
     }, [flash?.error, flash?.message, flash?.success]);
 
