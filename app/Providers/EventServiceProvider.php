@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\UserRegistered;
+use App\Listeners\SendWelcomeEmail;
 use App\Models\Post;
 use App\Observers\PostObserver;
 use Illuminate\Auth\Events\Registered;
@@ -20,6 +22,7 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        UserRegistered::class => [SendWelcomeEmail::class],
     ];
 
     /**

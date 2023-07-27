@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\UserRegistered;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\s16crud\PostController;
 use App\Jobs\SendMail;
@@ -28,6 +29,13 @@ Route::get('/', function () {
     }
     return to_route('login');
 });
+
+// 25 event listener
+Route::get('user-registered', function () {
+    event(new UserRegistered(Auth::user()));
+    dd('check your mail');
+})->middleware('auth');
+
 
 // 24 Queue
 Route::get('/send-mail', function () {
