@@ -12,6 +12,8 @@ import { Dispatch, SetStateAction } from "react";
 import ToggleColorScheme from "../button/ToggleColorScheme";
 import { User } from "@/types";
 import { router } from "@inertiajs/react";
+import { useLaravelReactI18n } from "laravel-react-i18n";
+import Localization from "../button/Localization";
 const Header = ({
     opened,
     setOpened,
@@ -23,6 +25,7 @@ const Header = ({
     theme: MantineTheme;
     user: User;
 }) => {
+    const { t } = useLaravelReactI18n();
     return (
         <MantineHeader height={{ base: 50, md: 70 }} p="md">
             <div
@@ -48,12 +51,13 @@ const Header = ({
                 </Group>
                 <Group>
                     <ToggleColorScheme my={"sm"} />
+                    <Localization />
                     <Button
                         onClick={() => router.post("/logout")}
                         variant="subtle"
                         size="xs"
                     >
-                        Logout
+                        {t("Appshell.Header.Logout")}
                     </Button>
                 </Group>
             </div>

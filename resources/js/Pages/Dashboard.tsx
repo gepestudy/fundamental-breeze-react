@@ -1,7 +1,7 @@
 import AppShell from "@/Components/layouts/AppShell";
 import { PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
-import { Button, Text, useMantineColorScheme } from "@mantine/core";
+import { Button, Image, Text, useMantineColorScheme } from "@mantine/core";
 import axios from "axios";
 import { useLaravelReactI18n } from "laravel-react-i18n";
 
@@ -15,6 +15,7 @@ export default function Dashboard({ auth, flash }: PageProps) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className=" overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 ">You're logged in!</div>
+
                         <Text>{memek.t("test.hello", { name: "memek" })}</Text>
                     </div>
                 </div>

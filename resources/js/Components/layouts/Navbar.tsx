@@ -10,8 +10,35 @@ import {
 } from "@mantine/core";
 import { LinksGroup } from "../button/LinksGroup";
 import { UserButton } from "../button/UserButton";
+import { useLaravelReactI18n } from "laravel-react-i18n";
 const Navbar = ({ opened, user }: { opened: boolean; user: User }) => {
+    const { t } = useLaravelReactI18n();
     const { classes } = useStyles();
+    const mockdata = [
+        {
+            label: t("Appshell.Navbar.Dashboard"),
+            icon: "1",
+            link: "/dashboard",
+        },
+        {
+            label: t("Appshell.Navbar.Section_14"),
+            icon: 14,
+            links: [
+                {
+                    label: t("Appshell.Navbar.Section_14_Posts"),
+                    link: "/post",
+                },
+                {
+                    label: t("Appshell.Navbar.Section_14_Create_Posts"),
+                    link: "/post/create",
+                },
+                {
+                    label: t("Appshell.Navbar.Section_14_Trashed_Posts"),
+                    link: "/post/trashed",
+                },
+            ],
+        },
+    ];
     const links = mockdata.map((item) => (
         <LinksGroup {...item} key={item.label} />
     ));
@@ -91,46 +118,3 @@ const useStyles = createStyles((theme) => ({
         }`,
     },
 }));
-
-const mockdata = [
-    { label: "Dashboard", icon: "1", link: "/dashboard" },
-    {
-        label: "Fundamental: CRUD Operation",
-        icon: 14,
-        links: [
-            {
-                label: "Posts",
-                link: "/post",
-            },
-            {
-                label: "Create Post",
-                link: "/post/create",
-            },
-            {
-                label: "Trahsed Posts",
-                link: "/post/trashed",
-            },
-        ],
-    },
-    // {
-    //   label: "Releases",
-    //   icon: IconCalendarStats,
-    //   links: [
-    //     { label: "Upcoming releases", link: "/" },
-    //     { label: "Previous releases", link: "/" },
-    //     { label: "Releases schedule", link: "/" },
-    //   ],
-    // },
-    // { label: "Analytics", icon: IconPresentationAnalytics },
-    // { label: "Contracts", icon: IconFileAnalytics },
-    // { label: "Settings", icon: IconAdjustments },
-    // {
-    //   label: "Security",
-    //   icon: IconLock,
-    //   links: [
-    //     { label: "Enable 2FA", link: "/" },
-    //     { label: "Change password", link: "/" },
-    //     { label: "Recovery codes", link: "/" },
-    //   ],
-    // },
-];
