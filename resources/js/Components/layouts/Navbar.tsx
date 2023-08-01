@@ -38,6 +38,16 @@ const Navbar = ({ opened, user }: { opened: boolean; user: User }) => {
                 },
             ],
         },
+        {
+            label: "Learn Package: Yajra datatable tp bikin sendiri",
+            icon: 28,
+            links: [
+                {
+                    label: "datatable",
+                    link: "/S28/datatable",
+                },
+            ],
+        },
     ];
     const links = mockdata.map((item) => (
         <LinksGroup {...item} key={item.label} />

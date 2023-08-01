@@ -3,6 +3,8 @@
 use App\Events\UserRegistered;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\s16crud\PostController;
+use App\Http\Controllers\S28\DatatableController;
+use App\Http\Controllers\S28yajra\yarjaController;
 use App\Jobs\SendMail;
 use App\Mail\PostPublished;
 use Illuminate\Http\Request;
@@ -29,6 +31,14 @@ Route::get('/', function () {
     }
     return to_route('login');
 });
+
+
+// 28-yajra-datatable
+// gajadi gunain yajra, akrna yajra ga support inertia. jd bikin sendiri ajadah anjing-anjing -_-
+Route::middleware('auth')->prefix('/S28')->group(function () {
+    Route::get('/datatable', [DatatableController::class, 'index'])->name('s28.datatable');
+});
+
 
 // 25 event listener
 Route::get('user-registered', function () {

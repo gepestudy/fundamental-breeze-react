@@ -119,7 +119,11 @@ export function LinksGroup({
                         onClick={() => setOpened((o) => !o)}
                         className={classes.control}
                     >
-                        <Group position="apart" spacing={0}>
+                        <Group
+                            position="apart"
+                            spacing={0}
+                            className="relative "
+                        >
                             <Box sx={{ display: "flex", alignItems: "center" }}>
                                 <ThemeIcon variant="light" size={30}>
                                     {typeof Icon !== "function" ? (
@@ -132,7 +136,7 @@ export function LinksGroup({
                             </Box>
                             {hasLinks && (
                                 <ChevronIcon
-                                    className={classes.chevron}
+                                    className={`${classes.chevron} absolute right-0`}
                                     size="1rem"
                                     stroke={1.5}
                                     style={{

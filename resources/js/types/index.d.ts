@@ -4,6 +4,9 @@ export interface User {
     email: string;
     email_verified_at: string;
     is_admin: boolean;
+    created_at: string;
+    updated_at: string;
+    role_id: number;
 }
 
 export interface Flash {

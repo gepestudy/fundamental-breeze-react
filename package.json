@@ -9,6 +9,7 @@
         "@headlessui/react": "^1.4.2",
         "@inertiajs/react": "^1.0.0",
         "@tailwindcss/forms": "^0.5.3",
+        "@types/lodash": "^4.14.196",
         "@types/node": "^18.13.0",
         "@types/react": "^18.0.28",
         "@types/react-dom": "^18.0.10",
@@ -35,7 +36,6 @@
         "@mantine/modals": "^6.0.17",
         "@mantine/notifications": "^6.0.17",
         "@mantine/nprogress": "^6.0.17",
-        "@mantine/prism": "^6.0.17",
         "@mantine/spotlight": "^6.0.17",
         "@mantine/tiptap": "^6.0.17",
         "@tabler/icons-react": "^2.26.0",
@@ -44,6 +44,7 @@
         "@tiptap/starter-kit": "^2.0.4",
         "dayjs": "^1.11.9",
         "embla-carousel-react": "^7.1.0",
-        "laravel-react-i18n": "^2.0.4"
+        "laravel-react-i18n": "^2.0.4",
+        "lodash": "^4.17.21"
     }
 }
