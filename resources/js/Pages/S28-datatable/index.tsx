@@ -102,7 +102,6 @@ const index = ({
                 {
                     perpage,
                     search: searchRef.current?.value,
-                    page,
                 },
                 (value) =>
                     !lodash.isNull(value) ||
