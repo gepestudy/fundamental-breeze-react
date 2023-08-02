@@ -37,6 +37,7 @@ Route::get('/', function () {
 // gajadi gunain yajra, akrna yajra ga support inertia. jd bikin sendiri ajadah anjing-anjing -_-
 Route::middleware('auth')->prefix('/S28')->group(function () {
     Route::get('/datatable', [DatatableController::class, 'index'])->name('s28.datatable');
+    Route::get('/datatable/export', [DatatableController::class, 'export'])->name('s28.datatable.export');
 });
 
 

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\S28;
 
+use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DatatableController extends Controller
 {
@@ -66,5 +68,11 @@ class DatatableController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    // Exports
+    public function export()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
 }

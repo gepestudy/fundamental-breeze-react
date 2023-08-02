@@ -1,6 +1,7 @@
 import AppShell from "@/Components/layouts/AppShell";
 import { User, Ziggy } from "@/types";
 import {
+    Box,
     Button,
     Card,
     Container,
@@ -16,10 +17,11 @@ import {
     TextInput,
 } from "@mantine/core";
 import { UsersWithPaginate } from "./types";
-import { Link, router } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import { useRef, useState } from "react";
 import lodash from "lodash";
 import { IconChevronDown } from "@tabler/icons-react";
+import axios from "axios";
 
 const index = ({
     auth,
@@ -30,6 +32,9 @@ const index = ({
     users: UsersWithPaginate;
     ziggy: Ziggy;
 }) => {
+    const [btnDownloadLoading, setBtnDownloadLoading] =
+        useState<boolean>(false);
+
     const page: number = ziggy.query?.page ? parseInt(ziggy.query.page) : 1;
     const perpage: number = ziggy.query?.perpage
         ? parseInt(ziggy.query.perpage)
@@ -39,6 +44,9 @@ const index = ({
         : undefined;
 
     const searchRef = useRef<HTMLInputElement>(null);
+
+    // form
+    const form = useForm();
 
     const formatDateTime = (dateTimeString: string): string => {
         const dateObject = new Date(dateTimeString);
@@ -119,26 +127,36 @@ const index = ({
         <AppShell user={auth.user} pageTitle="Yajra Datatable">
             <Container fluid>
                 <Card shadow="sm" padding="lg" radius="md" withBorder>
-                    <Card.Section className="flex justify-between items-center p-3">
-                        <Select
-                            data={[
-                                { value: "10", label: "10" },
-                                { value: "25", label: "25" },
-                                { value: "50", label: "50" },
-                                { value: "100", label: "100" },
-                            ]}
-                            rightSection={<IconChevronDown size="1rem" />}
-                            rightSectionWidth={30}
-                            styles={{ rightSection: { pointerEvents: "none" } }}
-                            defaultValue={perpage ? perpage.toString() : "10"}
-                            onChange={(e) => {
-                                handlerPerpage(e!);
-                            }}
-                            w={70}
-                        />
+                    <Card.Section className="flex flex-col gap-3 md:flex p-3">
+                        <Box className="flex justify-between">
+                            <Select
+                                data={[
+                                    { value: "10", label: "10" },
+                                    { value: "25", label: "25" },
+                                    { value: "50", label: "50" },
+                                    { value: "100", label: "100" },
+                                ]}
+                                rightSection={<IconChevronDown size="1rem" />}
+                                rightSectionWidth={30}
+                                styles={{
+                                    rightSection: { pointerEvents: "none" },
+                                }}
+                                defaultValue={
+                                    perpage ? perpage.toString() : "10"
+                                }
+                                onChange={(e) => {
+                                    handlerPerpage(e!);
+                                }}
+                                w={70}
+                            />
+                            <Button component="a" href="/S28/datatable/export">
+                                Download
+                            </Button>
+                        </Box>
+
                         <form
                             onSubmit={(e) => handlerSearch(e)}
-                            className="flex items-center gap-3"
+                            className="flex items-center gap-3 justify-center md:justify-end"
                         >
                             <TextInput ref={searchRef} placeholder="search" />
                             <Button type="submit" size="sm">
@@ -166,15 +184,16 @@ const index = ({
                     </Card.Section>
                     <Card.Section>
                         {rows ? (
-                            // <ScrollArea>
-                            <Table
-                                miw={800}
-                                verticalSpacing="sm"
-                                highlightOnHover
-                            >
-                                <thead>{ths}</thead>
-                                <tbody>{rows}</tbody>
-                            </Table>
+                            <ScrollArea p={"xs"}>
+                                <Table
+                                    miw={800}
+                                    verticalSpacing="sm"
+                                    highlightOnHover
+                                >
+                                    <thead>{ths}</thead>
+                                    <tbody>{rows}</tbody>
+                                </Table>
+                            </ScrollArea>
                         ) : (
                             <Text
                                 size={"xl"}
