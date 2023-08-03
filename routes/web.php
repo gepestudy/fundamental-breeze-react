@@ -5,6 +5,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\s16crud\PostController;
 use App\Http\Controllers\S28\DatatableController;
 use App\Http\Controllers\S28yajra\yarjaController;
+use App\Http\Controllers\S30\CartController;
+use App\Http\Controllers\S30\ShopController;
 use App\Jobs\SendMail;
 use App\Mail\PostPublished;
 use Illuminate\Http\Request;
@@ -32,6 +34,13 @@ Route::get('/', function () {
     return to_route('login');
 });
 
+
+// 30 learn pakcage laravel cart
+Route::middleware('auth')->prefix('/S30')->group(function () {
+    Route::get('/shop', [ShopController::class, 'index'])->name('s30.shop');
+    Route::get('/cart', [CartController::class, 'index'])->name('s30.cart');
+    Route::get('/add-to-cart/{id}', [CartController::class, 'addToCart'])->name('s30.addToCart');
+});
 
 // 28-yajra-datatable
 // gajadi gunain yajra, akrna yajra ga support inertia. jd bikin sendiri ajadah anjing-anjing -_-

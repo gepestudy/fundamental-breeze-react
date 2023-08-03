@@ -48,6 +48,20 @@ const Navbar = ({ opened, user }: { opened: boolean; user: User }) => {
                 },
             ],
         },
+        {
+            label: "Learn Package: laravel cart",
+            icon: 30,
+            links: [
+                {
+                    label: "shop",
+                    link: "/S30/shop",
+                },
+                {
+                    label: "cart",
+                    link: "/S30/cart",
+                },
+            ],
+        },
     ];
     const links = mockdata.map((item) => (
         <LinksGroup {...item} key={item.label} />
