@@ -18,7 +18,11 @@ class ProductFactory extends Factory
     {
         return [
             'name' => fake()->text(50),
-            'image' => fake()->randomElement(['storage/images/productImages/1.png', 'storage/images/productImages/3.png', 'storage/images/productImages/2.png']),
+            'image' => fake()->randomElement([
+                env('APP_URL') . '/storage/images/productImages/1.png',
+                env('APP_URL') . '/storage/images/productImages/2.png',
+                env('APP_URL') . '/storage/images/productImages/3.png',
+            ]),
             'description' => fake()->paragraphs(4, true),
             'price' => fake()->randomFloat(2, 100, 100000),
         ];

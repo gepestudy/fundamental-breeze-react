@@ -39,6 +39,9 @@ Route::get('/', function () {
 Route::middleware('auth')->prefix('/S30')->group(function () {
     Route::get('/shop', [ShopController::class, 'index'])->name('s30.shop');
     Route::get('/cart', [CartController::class, 'index'])->name('s30.cart');
+    Route::delete('/cart/delete/{id}', [CartController::class, 'delete'])->name('s30.cart.delete');
+    Route::get('/cart/increment/{id}', [CartController::class, 'increment'])->name('s30.cart.increment');
+    Route::get('/cart/decrement/{id}', [CartController::class, 'decrement'])->name('s30.cart.decrement');
     Route::get('/add-to-cart/{id}', [CartController::class, 'addToCart'])->name('s30.addToCart');
 });
 
