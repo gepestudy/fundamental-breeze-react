@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\S30\Cart;
 use App\Models\S30\Product;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -44,8 +45,14 @@ class CartController extends Controller
 
         try {
             $cart = Cart::findorFail($id);
-            $cart->quantity = $request->value ? $request->value : $cart->quantity + 1;
-            $cart->save();
+            $user = User::findOrFail(Auth::user()->id);
+            if (!$user->Carts->contains($cart)) {
+                throw new Exception("Cart ini bukan punya lu anjing!");
+            }
+            if ($cart->quantity < 10) {
+                $cart->quantity = $request->value ? $request->value : $cart->quantity + 1;
+                $cart->save();
+            }
 
             return back();
         } catch (\Throwable $th) {
@@ -57,8 +64,14 @@ class CartController extends Controller
 
         try {
             $cart = Cart::findorFail($id);
-            $cart->quantity = $request->value ? $request->value : $cart->quantity - 1;
-            $cart->save();
+            $user = User::findOrFail(Auth::user()->id);
+            if (!$user->Carts->contains($cart)) {
+                throw new Exception("Cart ini bukan punya lu anjing!");
+            }
+            if ($cart->quantity > 1) {
+                $cart->quantity = $request->value ? $request->value : $cart->quantity - 1;
+                $cart->save();
+            }
 
             return back();
         } catch (\Throwable $th) {
@@ -66,15 +79,18 @@ class CartController extends Controller
         }
     }
 
-    public function delete(Request $request, $id)
+    public function delete($id)
     {
         try {
             $cart = Cart::findorFail($id);
             $user = User::findOrFail(Auth::user()->id);
+            if (!$user->Carts->contains($cart)) {
+                throw new Exception("Cart ini bukan punya lu anjing!");
+            }
             $user->Carts()->detach($cart->id);
-
             return back()->with('success', 'Product removed from cart');
         } catch (\Throwable $th) {
+            // dd($th);
             return back()->with('error', $th->getMessage());
         }
     }

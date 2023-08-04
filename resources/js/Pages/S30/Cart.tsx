@@ -107,10 +107,7 @@ const CartPage = ({
                                                 decrementForm.get(
                                                     route(
                                                         "s30.cart.decrement",
-                                                        {
-                                                            id: cart.id,
-                                                            // value: 7,
-                                                        }
+                                                        cart.id
                                                     )
                                                 )
                                             }
