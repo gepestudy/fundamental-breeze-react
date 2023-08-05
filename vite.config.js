@@ -12,5 +12,8 @@ export default defineConfig({
         }),
         react(),
         i18n(),
+        () => {
+            console.log("hello world");
+        },
     ],
 });
