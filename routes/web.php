@@ -7,6 +7,7 @@ use App\Http\Controllers\S28\DatatableController;
 use App\Http\Controllers\S28yajra\yarjaController;
 use App\Http\Controllers\S30\CartController;
 use App\Http\Controllers\S30\ShopController;
+use App\Http\Controllers\S31\PermissionController;
 use App\Jobs\SendMail;
 use App\Mail\PostPublished;
 use Illuminate\Http\Request;
@@ -32,6 +33,26 @@ Route::get('/', function () {
         return Inertia::render('Dashboard');
     }
     return to_route('login');
+});
+
+// 31 learn package spati laravel permission
+// jadi spatie ini sebenernya bisa di bikin sendiri
+// spatie ini membutuhkan table user dan membuat table
+// role,permission,model_have_permission,model_have_role
+// dan role_have_permission. dimana mereka ini many to many
+
+// jadi ini flexibel, tetapi best practice nya bisa dengan cara
+// create permission -> berikan permission ke role -> verikan role ke user
+// karna ini many to many kita juga bisa liat permission & role apa saja yang ada
+// dan bisa lihat siapa aja user yang mempunyai role tertentu. tapi masih bingung kalau
+// role itu kan pasti jarang berubah2, mungkin kita bisa langsung direct permission ke user untuk case ini.
+
+Route::middleware('auth')->prefix('/S31')->group(function () {
+    Route::get('/check', [PermissionController::class, 'check'])->name('s31.check');
+    Route::get('/create-role', [PermissionController::class, 'createRole'])->name('s31.createRole');
+    Route::get('/create-permission', [PermissionController::class, 'createPermission'])->name('s31.createPermisson');
+    Route::get('/give-permission-to-role', [PermissionController::class, 'givePermissionToRole'])->name('s31.givePermissionToRole');
+    Route::get('/test', [PermissionController::class, 'giveRoleToUser'])->name('s31.test');
 });
 
 
