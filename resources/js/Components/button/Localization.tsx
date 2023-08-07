@@ -23,7 +23,7 @@ const Localization = () => {
                     <Menu.Item key={locale} onClick={() => setLocale(locale)}>
                         <div className="flex items-center justify-center">
                             <Image
-                                src={`/storage/img/lang/${locale}.png`}
+                                src={`https://ecomerce-fundamental-with-breeze.app/storage/img/lang/${locale}.png`}
                                 height={20}
                                 width={20}
                                 alt={locale}

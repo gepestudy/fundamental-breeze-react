@@ -9,7 +9,10 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
@@ -33,6 +36,23 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.store');
+
+
+    Route::get('/auth/redirect/google', function () {
+        return Socialite::driver('google')->redirect();
+    })->name('login.google');
+
+    Route::get('/auth/callback/google', function () {
+        $user = Socialite::driver('google')->user();
+
+        $user = User::updateOrCreate(['email' => $user->email], [
+            'name' => $user->name,
+            'email' => $user->email,
+        ]);
+        Auth::login($user);
+
+        return redirect()->route('dashboard');
+    });
 });
 
 Route::middleware('auth')->group(function () {

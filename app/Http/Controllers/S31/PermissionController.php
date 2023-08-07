@@ -20,6 +20,8 @@ class PermissionController extends Controller
     public function createRole()
     {
         try {
+            // $user = User::find(Auth::id());
+            // dd($user->can('create post'));
             $role = Role::create(['name' => 'user']);
             return compact('role');
         } catch (\Throwable $th) {

@@ -6,6 +6,8 @@ import {
     Card,
     Checkbox,
     Container,
+    Divider,
+    Image,
     PasswordInput,
     Stack,
     Text,
@@ -126,6 +128,16 @@ export default function Login({
                             </Button>
                         </div>
                     </form>
+                    <Divider
+                        label="OR"
+                        labelPosition="center"
+                        className="my-3"
+                    />
+                    <div className="flex justify-center">
+                        <Button component={"a"} href={route("login.google")}>
+                            <Text>continue with google</Text>
+                        </Button>
+                    </div>
                 </Card>
             </Container>
         </Box>
