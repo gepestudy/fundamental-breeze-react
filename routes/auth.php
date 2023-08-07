@@ -45,7 +45,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/auth/callback/google', function () {
         $user = Socialite::driver('google')->user();
 
-        $user = User::updateOrCreate(['email' => $user->email], [
+        $user = User::firstOrCreate(['email' => $user->email], [
             'name' => $user->name,
             'email' => $user->email,
         ]);

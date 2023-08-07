@@ -33,7 +33,7 @@ return [
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => 'https://ecomerce-fundamental-with-breeze.app/auth/callback/google',
+        'redirect' => env('GOOGLE_REDIRECT_URL'),
     ],
 
 ];
